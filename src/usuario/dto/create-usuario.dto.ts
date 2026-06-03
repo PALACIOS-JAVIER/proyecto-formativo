@@ -20,6 +20,10 @@ export class CreateUsuarioDto {
     @MinLength(8)
     contraseña: string;
 
+    @IsString()
+    @MinLength(8)
+    confirmarContraseña: string;
+
     @IsIn(['Activo', 'Inactivo'])
     @IsOptional()
     @IsString()

@@ -7,6 +7,10 @@ export class ControlCalidad {
     @PrimaryGeneratedColumn('uuid')
     id: string;     
     
+    @Column({
+        type: 'enum',
+        enum: ['Aprobado', 'Rechazado', 'Pendiente'],
+    })
     estado: string;
 
     @Column('date')
@@ -14,6 +18,9 @@ export class ControlCalidad {
 
     @Column('text')
     observaciones: string; 
+
+    @Column({type:'text', nullable: true})
+    firma: string;
     
     @ManyToOne(() => Informe)
     @JoinColumn({ name: 'fk_informe' })

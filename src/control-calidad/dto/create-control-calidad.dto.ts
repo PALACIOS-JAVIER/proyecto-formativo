@@ -1,4 +1,5 @@
-import { IsIn, IsString, IsDate, IsOptional, IsUUID } from 'class-validator';
+import { IsIn, IsString, IsDate, IsOptional, IsUUID, ValidateIf } from 'class-validator';
+import { isSetIterator } from 'util/types';
 export class CreateControlCalidadDto {
 
     @IsString()
@@ -8,10 +9,13 @@ export class CreateControlCalidadDto {
     @IsDate()
     fecha: Date;
 
+    @ValidateIf(o => o.estado === 'Rechazado')
     @IsString()
-    @IsOptional()
     observaciones: string;
 
+    @ValidateIf(o => o.estado === 'Aprobado')
+    @IsString()
+    Firma: string;
 
     @IsUUID()
     fk_informe: string;

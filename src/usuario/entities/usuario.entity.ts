@@ -11,6 +11,7 @@ import { Area } from 'src/area/entities/area.entity';
 import { Rol } from 'src/rol/entities/rol.entity';
 import { Novedad } from 'src/novedad/entities/novedad.entity';
 import { TipoContratro } from 'src/TipoContratro/entities/tipo_contratro.entity';
+import { BadRequestException } from '@nestjs/common';
 
 @Entity()
 export class Usuario {
@@ -23,19 +24,22 @@ export class Usuario {
   @Column('text', { unique: true })
   correo_Institucional: string;
 
-  @Column()
+  @Column('numeric', { unique: true })
   cedula: number;
 
-  @Column()
+  @Column('numeric', { unique: true })
   telefono: number;
 
-  @Column()
+  @Column('text')
   contraseña: string;
+
+  @Column()
+  confirmarContraseña: string;
 
   @Column({ default: 'Activo' })
   estado: string;
 
-  @Column()
+  @Column('numeric', { unique: true })
   SIIF: number;
 
   @Column({ nullable: true })
@@ -59,6 +63,9 @@ export class Usuario {
 
   @BeforeInsert()
   async hashPassword() {
+    if (this.contraseña !== this.confirmarContraseña) {
+      throw new BadRequestException('Las contraseñas no coinciden');
+    }
     this.contraseña = await bcrypt.hash(this.contraseña, 10);
   }
 
